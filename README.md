@@ -56,3 +56,39 @@ Access Code2Pseudo on any device. Designed to work seamlessly across desktops, t
 
 4️⃣.C / C++
 
+## Installation
+
+1. Clone the Repository
+
+git clone https://github.com/mmahesh09/pseudoFY.git
+cd code2pseudo
+
+2. Install Dependencies
+
+npm install
+
+3. Set Up Environment Variables
+
+Create a .env.local file and include your OpenAI API key:
+
+OPENAI_API_KEY=your_api_key_here
+
+4. Run Locally
+
+npm run dev
+
+App will be running on http://localhost:3000
+
+
+## Usage
+
+🔸️Paste your source code into the left editor panel
+
+🔸️Select a pseudocode style and detail level
+
+🔸️Click "Generate"
+
+🔸️View or export the pseudocode from the right panel
+
+🔸️You can also upload files or enable Interview Mode for practice.
+
