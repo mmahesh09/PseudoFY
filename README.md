@@ -44,3 +44,15 @@ Supports academic styles such as IEEE, custom templates, and pseudocode syntax v
 10. Mobile-Responsive Design
 
 Access Code2Pseudo on any device. Designed to work seamlessly across desktops, tablets, and smartphones.
+
+
+## Supported Languages
+
+1️⃣.Python
+
+2️⃣.JavaScript
+
+3️⃣.Java
+
+4️⃣.C / C++
+
