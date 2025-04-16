@@ -56,26 +56,6 @@
 
 ---
 
-## Installation
 
-1. **Clone the Repository**
-```bash
-git clone https://github.com/mmahesh09/PseudoFY.git
-```
-```bash
-cd PseudoFY
-```
-2. **Install Dependencies **
-   ```bash
-   npm install
-   ```
-3.**Set Up Environment Variables**
-Create a `.env.local` file and include your OpenAI API key:
-```bash
-OPENAI_API_KEY=your_api_key_here
-```
-4. **Run Locally**
-```bash
-npm run dev
 ```
 Visit http://localhost:3000 in your browser.
