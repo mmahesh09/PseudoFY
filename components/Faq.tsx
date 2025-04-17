@@ -171,7 +171,7 @@ function Faq02() {
             <Mail className="h-4 w-4" />
           </div>
           <p className="text-sm font-medium text-gray-900 dark:text-white mb-1">Still have questions?</p>
-          <p className="text-xs text-gray-600 dark:text-gray-400 mb-4">We're here to help you</p>
+          <p className="text-xs text-gray-600 dark:text-gray-400 mb-4">We&apos;sre here to help you</p>
           <button
             type="button"
             className={cn(

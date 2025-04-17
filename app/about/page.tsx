@@ -2,6 +2,7 @@ import React from "react";
 import Footer from "@/components/Footer";
 import { Geist, Geist_Mono } from "next/font/google";
 import NavbarComponent from "@/components/NavbarComponent";
+
 // Move font declarations OUTSIDE the component
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -21,27 +22,25 @@ const About = () => {
       id="about"
       className={`relative bg-black text-white px-6 py-16 overflow-hidden ${geistSans.variable} ${geistMono.variable} antialiased pattern`}
     >
-      <NavbarComponent/>
-      <div className="absolute inset-0 flex justify-center items-center pointer-events-none z-0 opacity-10 select-none">
-        
-      </div>
+      <NavbarComponent />
+      <div className="absolute inset-0 flex justify-center items-center pointer-events-none z-0 opacity-10 select-none"></div>
 
       {/* Foreground Content */}
       <div className="relative z-10 max-w-5xl mx-auto space-y-12">
         <h2 className="text-4xl font-bold text-center text-white">About Us</h2>
 
         <p className="text-lg leading-relaxed">
-          Welcome to <strong>Pseudofy</strong> — an AI-powered platform created to make the logic behind code clear, accessible, and beautifully understandable. Whether you're just beginning your journey into programming or you're an expert looking to explain complex logic, <strong>Pseudofy empowers you to bridge the gap between code and clarity</strong>.
+          Welcome to <strong>Pseudofy</strong> — an AI-powered platform created to make the logic behind code clear, accessible, and beautifully understandable. Whether you&apos;re just beginning your journey into programming or you&apos;re an expert looking to explain complex logic, <strong>Pseudofy empowers you to bridge the gap between code and clarity</strong>.
         </p>
 
         <p className="text-lg leading-relaxed">
-          In today’s fast-paced development world, <strong>understanding the logic behind code is just as important as writing it</strong>. Syntax can be learned, but grasping the flow of a program—that’s what truly builds skill. That’s where Pseudofy steps in. By converting source code into clean, structured pseudocode, we help you focus on the core ideas.
+          In today&apos;s fast-paced development world, <strong>understanding the logic behind code is just as important as writing it</strong>. Syntax can be learned, but grasping the flow of a program—that&apos;s what truly builds skill. That&apos;s where Pseudofy steps in. By converting source code into clean, structured pseudocode, we help you focus on the core ideas.
         </p>
 
         <div>
           <h3 className="text-2xl font-semibold mb-2">Our Mission</h3>
           <p className="text-lg leading-relaxed">
-            <strong>Programming shouldn't feel intimidating.</strong> With so many languages, styles, and tools, it’s easy to feel overwhelmed. Our mission is simple yet powerful: <strong>Make code universally understandable</strong>. Whether you’re debugging a legacy project or teaching a classroom full of new developers, Pseudofy helps you explain logic—not syntax.
+            <strong>Programming shouldn&apos;t feel intimidating.</strong> With so many languages, styles, and tools, it&apos;s easy to feel overwhelmed. Our mission is simple yet powerful: <strong>Make code universally understandable</strong>. Whether you&apos;re debugging a legacy project or teaching a classroom full of new developers, Pseudofy helps you explain logic—not syntax.
           </p>
         </div>
 
@@ -62,10 +61,10 @@ const About = () => {
         <div>
           <h3 className="text-2xl font-semibold mb-2">Why Choose Pseudofy?</h3>
           <p className="text-lg leading-relaxed">
-            <strong>It’s not just a tool — it’s your coding companion.</strong> Pseudofy is designed to fit into the way you work and learn. It's fast, intuitive, and built to handle both small snippets and entire functions. Educators love it for simplifying lessons. Students rely on it to understand concepts. Developers use it to communicate better with non-tech stakeholders.
+            <strong>It&apos;s not just a tool — it&apos;s your coding companion.</strong> Pseudofy is designed to fit into the way you work and learn. It&apos;s fast, intuitive, and built to handle both small snippets and entire functions. Educators love it for simplifying lessons. Students rely on it to understand concepts. Developers use it to communicate better with non-tech stakeholders.
           </p>
           <p className="text-lg leading-relaxed mt-4">
-            With Pseudofy, <strong>you save time, reduce misunderstandings, and gain confidence in your logic</strong>. The platform is continuously evolving, and we’re obsessed with making it even better.
+            With Pseudofy, <strong>you save time, reduce misunderstandings, and gain confidence in your logic</strong>. The platform is continuously evolving, and we&apos;re obsessed with making it even better.
           </p>
         </div>
 
@@ -82,7 +81,7 @@ const About = () => {
             <li>Deep integration with learning platforms and IDEs.</li>
           </ul>
           <p className="text-lg leading-relaxed mt-4">
-            <strong>Pseudofy isn’t just a product — it’s a movement.</strong> We’re building a future where code isn't a barrier, but a bridge.
+            <strong>Pseudofy isn&apos;t just a product — it&apos;s a movement.</strong> We&apos;re building a future where code isn&apos;t a barrier, but a bridge.
           </p>
         </div>
       </div>

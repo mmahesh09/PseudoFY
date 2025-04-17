@@ -9,33 +9,30 @@ import { Prism as SyntaxHighlighter } from "react-syntax-highlighter";
 import { atomDark } from "react-syntax-highlighter/dist/cjs/styles/prism";
 import langDetector from "lang-detector";
 import Footer from "@/components/Footer";
-import NavbarComponent from "@/components/NavbarComponent"; // Added import
+import NavbarComponent from "@/components/NavbarComponent";
 import { Geist, Geist_Mono } from "next/font/google";
 
 const geistSans = Geist({
-    variable: "--font-geist-sans",
-    subsets: ["latin"],
-    display: "swap",
-  });
-  
-  const geistMono = Geist_Mono({
-    variable: "--font-geist-mono",
-    subsets: ["latin"],
-    display: "swap",
-  });
-  
+  variable: "--font-geist-sans",
+  subsets: ["latin"],
+  display: "swap",
+});
+
+const geistMono = Geist_Mono({
+  variable: "--font-geist-mono",
+  subsets: ["latin"],
+  display: "swap",
+});
+
 const languages = ["C", "C++", "Java", "Python", "JavaScript"];
 
-// Error messages
 const ERROR_MESSAGES = {
   missingSemicolon: "Missing semicolon.",
   unclosedBrackets: "Unclosed brackets or parentheses detected.",
   invalidSyntax: "Invalid syntax detected. Please check your code.",
 };
 
-// Helper Functions
 const formatCode = (code: string) => {
-  // Simple code formatting function (can be expanded)
   return code
     .replace(/;/g, " ;")
     .replace(/{/g, "{\n")
@@ -55,7 +52,7 @@ const detectStructuresAndAlgorithms = (code: string) => {
       { name: "Linked List", regex: /next|Node/ },
       { name: "Hash Table", regex: /{.*}/ },
       { name: "Binary Tree", regex: /left|right/ },
-      { name: "Graph", regex: /adj|graph|vertex/ }
+      { name: "Graph", regex: /adj|graph|vertex/ },
     ],
     algorithms: [
       { name: "Merge Sort", regex: /merge\(|mergeSort\(/ },
@@ -64,8 +61,8 @@ const detectStructuresAndAlgorithms = (code: string) => {
       { name: "Binary Search", regex: /binarySearch\(/ },
       { name: "DFS", regex: /dfs\(/ },
       { name: "BFS", regex: /bfs\(/ },
-      { name: "Dijkstra", regex: /dijkstra/ }
-    ]
+      { name: "Dijkstra", regex: /dijkstra/ },
+    ],
   };
 
   patterns.structures.forEach(({ name, regex }) => {
@@ -95,9 +92,8 @@ const formatPseudocode = (code: string) => {
     .join("\n");
 };
 
-// Complexity
 const detectComplexity = (algorithm: string) => {
-  const complexities: { [key: string]: { best: string, avg: string, worst: string } } = {
+  const complexities: { [key: string]: { best: string; avg: string; worst: string } } = {
     "Merge Sort": { best: "O(n log n)", avg: "O(n log n)", worst: "O(n log n)" },
     "Quick Sort": { best: "O(n log n)", avg: "O(n log n)", worst: "O(n^2)" },
     "Bubble Sort": { best: "O(n)", avg: "O(n^2)", worst: "O(n^2)" },
@@ -111,36 +107,39 @@ const detectComplexity = (algorithm: string) => {
 
 const Page = () => {
   const [code, setCode] = useState("");
-  const [language, setLanguage] = useState("auto");
   const [pseudocode, setPseudocode] = useState("");
-  const [dataStructures, setDataStructures] = useState<string[]>([]);  // Explicitly typed as string[]
-  const [algorithms, setAlgorithms] = useState<string[]>([]);  // Explicitly typed as string[]
+  const [dataStructures, setDataStructures] = useState<string[]>([]);
+  const [algorithms, setAlgorithms] = useState<string[]>([]);
   const [complexity, setComplexity] = useState({ best: "-", avg: "-", worst: "-" });
   const [explanation, setExplanation] = useState("");
-  const [selectedLang, setSelectedLang] = useState("Python"); // New language state
-  const [showError, setShowError] = useState(""); // Error message state
+  const [selectedLang, setSelectedLang] = useState("Python");
+  const [showError, setShowError] = useState("");
   const exportRef = useRef(null);
 
   useEffect(() => {
-    // Auto detect language on load
     const lang = langDetector(code);
-    setLanguage(lang);
-  }, []);
+    console.log("Detected Language:", lang);
+  }, [code]);
 
   const generatePseudocode = () => {
     setShowError("");
 
     try {
       const formattedCode = formatCode(code);
-      setCode(formattedCode); // Auto format code
+      setCode(formattedCode);
 
       const { dataStructures, algorithms } = detectStructuresAndAlgorithms(formattedCode);
       const mainAlgo = algorithms[0] || "Unknown";
+
       setPseudocode(formatPseudocode(formattedCode));
       setDataStructures(Array.from(new Set(dataStructures)));
       setAlgorithms(Array.from(new Set(algorithms)));
       setComplexity(detectComplexity(mainAlgo));
-      setExplanation(mainAlgo !== "Unknown" ? `${mainAlgo} is a classic algorithm. The pseudocode describes its core steps clearly.` : "Algorithm not recognized. The pseudocode shows general control flow.");
+      setExplanation(
+        mainAlgo !== "Unknown"
+          ? `${mainAlgo} is a classic algorithm. The pseudocode describes its core steps clearly.`
+          : "Algorithm not recognized. The pseudocode shows general control flow."
+      );
     } catch (e) {
       setShowError(ERROR_MESSAGES.invalidSyntax);
     }
@@ -150,18 +149,9 @@ const Page = () => {
     setSelectedLang(event.target.value);
   };
 
-  const handleExampleCodeChange = (exampleCode: string) => {
-    setCode(exampleCode);
-  };
-
-  const exampleCodes = {
-    "Merge Sort": "def merge_sort(arr):\n    if len(arr) > 1:\n        mid = len(arr) // 2\n        left = arr[:mid]\n        right = arr[mid:]\n        merge_sort(left)\n        merge_sort(right)\n        i = j = k = 0\n        while i < len(left) and j < len(right):\n            if left[i] < right[j]:\n                arr[k] = left[i]\n                i += 1\n            else:\n                arr[k] = right[j]\n                j += 1\n            k += 1\n        while i < len(left):\n            arr[k] = left[i]\n            i += 1\n            k += 1\n        while j < len(right):\n            arr[k] = right[j]\n            j += 1\n            k += 1",
-    // Add more examples as needed
-  };
-
   return (
     <div className="p-4 min-h-screen bg-black text-white flex flex-col">
-      <NavbarComponent /> {/* Added NavbarComponent */}
+      <NavbarComponent />
 
       <h1 className="text-3xl font-bold text-center mb-6">Code to Pseudocode Converter</h1>
 

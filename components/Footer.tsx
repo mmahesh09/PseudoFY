@@ -1,15 +1,20 @@
 import React from "react";
-import Link from "next/link";
+import Image from "next/image"; // ✅ Updated
+
 const Footer = () => {
   return (
     <footer className="bg-black text-white py-12 px-6 md:px-16">
       <div className="flex flex-col md:flex-row justify-between gap-12">
         {/* Left section */}
-        
         <div className="space-y-4">
           <div className="flex items-center space-x-3">
-            {/* Replace the src below with your logo image path */}
-            <img src="/Py.png" alt="Logo" className="w-8 h-8 rounded" />
+            <Image
+              src="/Py.png"
+              alt="Logo"
+              width={32}
+              height={32}
+              className="rounded"
+            />
             <h2 className="text-2xl font-bold">PseudoFY</h2>
           </div>
           <p className="text-sm text-gray-400">

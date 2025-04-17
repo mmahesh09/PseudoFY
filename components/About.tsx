@@ -1,4 +1,4 @@
-import React from 'react'
+import React from 'react';
 
 const About = () => {
   return (
@@ -7,7 +7,7 @@ const About = () => {
         <h2 className="text-4xl font-bold text-center text-gray-900">About Us</h2>
 
         <p className="text-lg leading-relaxed">
-          Welcome to <strong>Pseudofy</strong>, the innovative tool designed to simplify the world of programming by helping you convert your code into clear, easy-to-understand pseudocode. Whether you're a beginner trying to understand logic or an experienced developer explaining complex algorithms, Pseudofy is here to help.
+          Welcome to <strong>Pseudofy</strong>, the innovative tool designed to simplify the world of programming by helping you convert your code into clear, easy-to-understand pseudocode. Whether you&apos;re a beginner trying to understand logic or an experienced developer explaining complex algorithms, Pseudofy is here to help.
         </p>
 
         <p className="text-lg leading-relaxed">
@@ -28,8 +28,8 @@ const About = () => {
             <li><strong>Real-Time Pseudocode Preview:</strong> See your logic instantly as you code.</li>
             <li><strong>Customizable Detail Levels:</strong> Choose between simple and detailed logic views.</li>
             <li><strong>AI-Powered Explanations:</strong> Hover for clear explanations of each line.</li>
-            <li><strong>Algorithm Detection & Complexity Breakdown:</strong> Know what algorithm you're using and its efficiency.</li>
-            <li><strong>Export & Share:</strong> Save pseudocode as PDF, Markdown, or plain text.</li>
+            <li><strong>Algorithm Detection &amp; Complexity Breakdown:</strong> Know what algorithm you&apos;re using and its efficiency.</li>
+            <li><strong>Export &amp; Share:</strong> Save pseudocode as PDF, Markdown, or plain text.</li>
             <li><strong>Syntax Highlighting:</strong> Your original code is visually enhanced for clarity.</li>
             <li><strong>Mobile-Friendly Interface:</strong> Works perfectly on any device.</li>
           </ul>
@@ -38,19 +38,19 @@ const About = () => {
         <div>
           <h3 className="text-2xl font-semibold mb-2">Why Choose Pseudofy?</h3>
           <p className="text-lg leading-relaxed">
-            It's user-friendly, time-saving, versatile, and powered by AI. Whether you're learning, teaching, or explaining code, Pseudofy helps you focus on logic—not syntax.
+            It&apos;s user-friendly, time-saving, versatile, and powered by AI. Whether you&apos;re learning, teaching, or explaining code, Pseudofy helps you focus on logic—not syntax.
           </p>
         </div>
 
         <div>
           <h3 className="text-2xl font-semibold mb-2">Our Vision for the Future</h3>
           <p className="text-lg leading-relaxed">
-            We’re just getting started. We plan to support more languages, add new features, and refine the user experience. Our dream? A world where everyone can understand and explain code, no matter their background.
+            We&apos;re just getting started. We plan to support more languages, add new features, and refine the user experience. Our dream? A world where everyone can understand and explain code, no matter their background.
           </p>
         </div>
       </div>
     </section>
-  )
-}
+  );
+};
 
-export default About
+export default About;
