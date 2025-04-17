@@ -140,7 +140,7 @@ const Page = () => {
           ? `${mainAlgo} is a classic algorithm. The pseudocode describes its core steps clearly.`
           : "Algorithm not recognized. The pseudocode shows general control flow."
       );
-    } catch (e) {
+    } catch (err) {
       setShowError(ERROR_MESSAGES.invalidSyntax);
     }
   };
@@ -160,7 +160,7 @@ const Page = () => {
           <label className="block mb-2 font-semibold">Select Language</label>
           <select
             value={selectedLang}
-            onChange={handleLanguageChange}
+            onChange={handleLanguageChange}  // 'event' is now used properly
             className="w-full mb-4 p-2 border text-black"
           >
             {languages.map((lang) => (
@@ -174,7 +174,7 @@ const Page = () => {
             className="w-full h-60 text-white bg-black"
             placeholder="Paste your code here..."
             value={code}
-            onChange={(e) => setCode(e.target.value)}
+            onChange={(e) => setCode(e.target.value)} // 'e' is used correctly here
           />
 
           <Button onClick={generatePseudocode} className="mt-4">
