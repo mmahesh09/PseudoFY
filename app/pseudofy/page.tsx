@@ -1,7 +1,6 @@
 "use client";
 
 import React, { useState, useRef, useEffect } from "react";
-import { Textarea } from "@/components/ui/textarea";
 import { Button } from "@/components/ui/button";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Card, CardContent } from "@/components/ui/card";
@@ -140,7 +139,8 @@ const Page = () => {
           ? `${mainAlgo} is a classic algorithm. The pseudocode describes its core steps clearly.`
           : "Algorithm not recognized. The pseudocode shows general control flow."
       );
-    } catch (err) {
+    }  catch (err) {
+        console.error("Error converting code:", err);
       setShowError(ERROR_MESSAGES.invalidSyntax);
     }
   };
@@ -169,12 +169,11 @@ const Page = () => {
               </option>
             ))}
           </select>
-
-          <Textarea
+          <textarea
             className="w-full h-60 text-white bg-black"
             placeholder="Paste your code here..."
             value={code}
-            onChange={(e) => setCode(e.target.value)} // 'e' is used correctly here
+            onChange={(e) => setCode(e.target.value)}
           />
 
           <Button onClick={generatePseudocode} className="mt-4">
