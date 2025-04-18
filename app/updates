@@ -1,0 +1,33 @@
+import React from 'react';
+
+const updates = [
+  {
+    date: '2025-04-18',
+    title: 'Launched Updates Page',
+    description: 'Added a new updates section to keep track of new features and improvements.',
+  },
+  {
+    date: '2025-04-15',
+    title: 'Improved Navbar UX',
+    description: 'Updated the navbar to include external links and a mobile-friendly layout.',
+  },
+];
+
+const Updates = () => {
+  return (
+    <div className="min-h-screen px-4 py-10 max-w-3xl mx-auto">
+      <h1 className="text-3xl font-bold mb-6">Updates</h1>
+      <ul className="space-y-6">
+        {updates.map((update, index) => (
+          <li key={index} className="border-l-4 border-blue-500 pl-4">
+            <p className="text-sm text-gray-500">{update.date}</p>
+            <h2 className="text-xl font-semibold">{update.title}</h2>
+            <p className="text-gray-700">{update.description}</p>
+          </li>
+        ))}
+      </ul>
+    </div>
+  );
+};
+
+export default Updates;
