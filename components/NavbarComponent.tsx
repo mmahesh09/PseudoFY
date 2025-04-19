@@ -1,6 +1,7 @@
 "use client";
-import React, { useState } from 'react';
-import { Link } from 'react-router-dom'; // ✅ Added this
+
+import React, { useState } from "react";
+import Link from "next/link"; // ✅ Correct import for Next.js
 import {
   Navbar,
   NavBody,
@@ -44,25 +45,14 @@ const NavbarComponent = () => {
 
         <MobileNavMenu isOpen={isMobileMenuOpen} onClose={() => setIsMobileMenuOpen(false)}>
           {navItems.map((item, idx) => (
-            item.link.startsWith("/") ? (
-              <Link
-                key={`mobile-link-${idx}`}
-                to={item.link}
-                onClick={() => setIsMobileMenuOpen(false)}
-                className="relative text-neutral-600 dark:text-neutral-300"
-              >
-                <span className="block">{item.name}</span>
-              </Link>
-            ) : (
-              <a
-                key={`mobile-link-${idx}`}
-                href={item.link}
-                onClick={() => setIsMobileMenuOpen(false)}
-                className="relative text-neutral-600 dark:text-neutral-300"
-              >
-                <span className="block">{item.name}</span>
-              </a>
-            )
+            <Link
+              key={`mobile-link-${idx}`}
+              href={item.link}
+              onClick={() => setIsMobileMenuOpen(false)}
+              className="relative text-neutral-600 dark:text-neutral-300"
+            >
+              <span className="block">{item.name}</span>
+            </Link>
           ))}
 
           <div className="flex w-full flex-col gap-4 mt-4">
