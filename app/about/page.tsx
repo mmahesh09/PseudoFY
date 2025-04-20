@@ -2,8 +2,8 @@ import React from "react";
 import Footer from "@/components/Footer";
 import { Geist, Geist_Mono } from "next/font/google";
 import NavbarComponent from "@/components/NavbarComponent";
+import { ScrollProgress } from "@/components/magicui/scroll-progress";
 
-// Move font declarations OUTSIDE the component
 const geistSans = Geist({
   variable: "--font-geist-sans",
   subsets: ["latin"],
@@ -23,10 +23,12 @@ const About = () => {
       className={`relative bg-black text-white px-6 py-16 overflow-hidden ${geistSans.variable} ${geistMono.variable} antialiased pattern`}
     >
       <NavbarComponent />
+      <ScrollProgress className="top-[65px] z-50" />
+
       <div className="absolute inset-0 flex justify-center items-center pointer-events-none z-0 opacity-10 select-none"></div>
 
       {/* Foreground Content */}
-      <div className="relative z-10 max-w-5xl mx-auto space-y-12">
+      <div className="relative z-10 max-w-5xl mx-auto space-y-12 animate-fade-up animate-on-scroll" data-animate>
         <h2 className="text-4xl font-bold text-center text-white">About Us</h2>
 
         <p className="text-lg leading-relaxed">

@@ -8,7 +8,7 @@ export function ClientSection() {
     >
       <div className="py-14">
         <div className="mx-auto max-w-screen-xl px-4 md:px-8">
-          <h2 className="text-center text-sm font-semibold text-gray-600">
+          <h2 className="text-center  font-semibold text-white-600">
             BUILT WITH
           </h2>
           <div className="mt-6 overflow-x-auto">

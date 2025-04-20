@@ -10,28 +10,49 @@ import langDetector from "lang-detector";
 import Footer from "@/components/Footer";
 import NavbarComponent from "@/components/NavbarComponent";
 import { Geist, Geist_Mono } from "next/font/google";
+import { Download, RefreshCw, Play } from "lucide-react";
+import { toast } from "sonner";
+import Editor from "@monaco-editor/react";
+import { Bar } from "react-chartjs-2";
+import {
+  Chart as ChartJS,
+  BarElement,
+  CategoryScale,
+  LinearScale,
+  Tooltip,
+  Legend,
+} from "chart.js";
 
-const geistSans = Geist({
-  variable: "--font-geist-sans",
-  subsets: ["latin"],
-  display: "swap",
-});
-
-const geistMono = Geist_Mono({
-  variable: "--font-geist-mono",
-  subsets: ["latin"],
-  display: "swap",
-});
+ChartJS.register(BarElement, CategoryScale, LinearScale, Tooltip, Legend);
 
 const languages = ["C", "C++", "Java", "Python", "JavaScript"];
 
-const ERROR_MESSAGES = {
-  missingSemicolon: "Missing semicolon.",
-  unclosedBrackets: "Unclosed brackets or parentheses detected.",
-  invalidSyntax: "Invalid syntax detected. Please check your code.",
+const templates = {
+  "Bubble Sort": `function bubbleSort(arr) {
+  for (let i = 0; i < arr.length; i++) {
+    for (let j = 0; j < arr.length - i - 1; j++) {
+      if (arr[j] > arr[j + 1]) {
+        let temp = arr[j];
+        arr[j] = arr[j + 1];
+        arr[j + 1] = temp;
+      }
+    }
+  }
+  return arr;
+}`,
+  "Binary Search": `function binarySearch(arr, target) {
+  let left = 0, right = arr.length - 1;
+  while (left <= right) {
+    let mid = Math.floor((left + right) / 2);
+    if (arr[mid] === target) return mid;
+    else if (arr[mid] < target) left = mid + 1;
+    else right = mid - 1;
+  }
+  return -1;
+}`,
 };
 
-const formatCode = (code: string) => {
+const formatCode = (code: string): string => {
   return code
     .replace(/;/g, " ;")
     .replace(/{/g, "{\n")
@@ -74,54 +95,67 @@ const detectStructuresAndAlgorithms = (code: string) => {
   return { dataStructures, algorithms };
 };
 
-const formatPseudocode = (code: string) => {
-  return code
+const detectComplexity = (algorithm: string) => {
+  const complexities = {
+    "Merge Sort": { best: "O(n log n)", avg: "O(n log n)", worst: "O(n log n)" },
+    "Quick Sort": { best: "O(n log n)", avg: "O(n log n)", worst: "O(n^2)" },
+    "Bubble Sort": { best: "O(n)", avg: "O(n^2)", worst: "O(n^2)" },
+    "Binary Search": { best: "O(1)", avg: "O(log n)", worst: "O(log n)" },
+    DFS: { best: "O(V+E)", avg: "O(V+E)", worst: "O(V+E)" },
+    BFS: { best: "O(V+E)", avg: "O(V+E)", worst: "O(V+E)" },
+    Dijkstra: { best: "O((V+E) log V)", avg: "O((V+E) log V)", worst: "O((V+E) log V)" },
+  };
+  return complexities[algorithm as keyof typeof complexities] || { best: "-", avg: "-", worst: "-" };
+};
+
+const suggestFixes = (code: string) => {
+  const suggestions: string[] = [];
+  if (!code.includes(";")) suggestions.push("Consider adding missing semicolons.");
+  if ((code.match(/{/g) || []).length !== (code.match(/}/g) || []).length)
+    suggestions.push("Check for unmatched brackets.");
+  if (!/for|if|def|function/.test(code)) suggestions.push("No control structures found. Did you mean to use a loop or conditional?");
+  return suggestions;
+};
+
+const formatPseudocode = (code: string, lang: string): string => {
+  const base = code
     .replace(/;/g, "")
-    .replace(/\{/g, "BEGIN")
+    .replace(/\{/g, "START")
     .replace(/\}/g, "END")
     .replace(/\bfor\b/g, "FOR")
+    .replace(/\bwhile\b/g, "WHILE")
     .replace(/\bif\b/g, "IF")
     .replace(/\belse\b/g, "ELSE")
-    .replace(/\bwhile\b/g, "WHILE")
-    .replace(/\/\/.*$/gm, "")
     .replace(/function\s*(\w+)/g, "FUNCTION $1")
     .split("\n")
     .map((line) => line.trim())
     .filter(Boolean)
     .join("\n");
-};
 
-const detectComplexity = (algorithm: string) => {
-  const complexities: { [key: string]: { best: string; avg: string; worst: string } } = {
-    "Merge Sort": { best: "O(n log n)", avg: "O(n log n)", worst: "O(n log n)" },
-    "Quick Sort": { best: "O(n log n)", avg: "O(n log n)", worst: "O(n^2)" },
-    "Bubble Sort": { best: "O(n)", avg: "O(n^2)", worst: "O(n^2)" },
-    "Binary Search": { best: "O(1)", avg: "O(log n)", worst: "O(log n)" },
-    "DFS": { best: "O(V+E)", avg: "O(V+E)", worst: "O(V+E)" },
-    "BFS": { best: "O(V+E)", avg: "O(V+E)", worst: "O(V+E)" },
-    "Dijkstra": { best: "O((V+E) log V)", avg: "O((V+E) log V)", worst: "O((V+E) log V)" },
-  };
-  return complexities[algorithm as keyof typeof complexities] || { best: "-", avg: "-", worst: "-" };
+  if (lang === "Python") {
+    return base.replace(/:/g, "").replace(/def/g, "FUNCTION");
+  }
+  return base;
 };
 
 const Page = () => {
   const [code, setCode] = useState("");
   const [pseudocode, setPseudocode] = useState("");
-  const [dataStructures, setDataStructures] = useState<string[]>([]);
-  const [algorithms, setAlgorithms] = useState<string[]>([]);
+  const [dataStructures, setDataStructures] = useState<string[]>([]); // Explicitly typed as string[]
+  const [algorithms, setAlgorithms] = useState<string[]>([]); // Explicitly typed as string[]
   const [complexity, setComplexity] = useState({ best: "-", avg: "-", worst: "-" });
   const [explanation, setExplanation] = useState("");
   const [selectedLang, setSelectedLang] = useState("Python");
-  const [showError, setShowError] = useState("");
-  const exportRef = useRef(null);
-
-  useEffect(() => {
-    const lang = langDetector(code);
-    console.log("Detected Language:", lang);
-  }, [code]);
+  const [showModal, setShowModal] = useState(false);
+  const [suggestions, setSuggestions] = useState<string[]>([]); // Explicitly typed as string[]
 
   const generatePseudocode = () => {
-    setShowError("");
+    if (!/\bdef\b|\bclass\b|\bfor\b|\bif\b|\bwhile\b/.test(code)) {
+      const fixes = suggestFixes(code);
+      toast.error("Invalid code entered.");
+      setSuggestions(fixes);
+      return;
+    }
 
     try {
       const formattedCode = formatCode(code);
@@ -129,78 +163,117 @@ const Page = () => {
 
       const { dataStructures, algorithms } = detectStructuresAndAlgorithms(formattedCode);
       const mainAlgo = algorithms[0] || "Unknown";
-
-      setPseudocode(formatPseudocode(formattedCode));
-      setDataStructures(Array.from(new Set(dataStructures)));
-      setAlgorithms(Array.from(new Set(algorithms)));
+      setPseudocode(formatPseudocode(formattedCode, selectedLang));
+      setDataStructures([...new Set(dataStructures)]);
+      setAlgorithms([...new Set(algorithms)]);
       setComplexity(detectComplexity(mainAlgo));
       setExplanation(
         mainAlgo !== "Unknown"
           ? `${mainAlgo} is a classic algorithm. The pseudocode describes its core steps clearly.`
           : "Algorithm not recognized. The pseudocode shows general control flow."
       );
-    }  catch (err) {
-        console.error("Error converting code:", err);
-      setShowError(ERROR_MESSAGES.invalidSyntax);
+
+      toast.success("Pseudocode generated successfully!");
+      setShowModal(true);
+      setSuggestions([]);
+    } catch (err) {
+      toast.error("Error while converting code.");
     }
   };
 
-  const handleLanguageChange = (event: React.ChangeEvent<HTMLSelectElement>) => {
-    setSelectedLang(event.target.value);
+  const chartData = {
+    labels: ["Best", "Average", "Worst"],
+    datasets: [
+      {
+        label: "Time Complexity",
+        backgroundColor: ["#16a34a", "#facc15", "#ef4444"],
+        data: [complexity.best, complexity.avg, complexity.worst].map((val) => {
+          if (val.includes("n^2")) return 100;
+          if (val.includes("n log n")) return 70;
+          if (val.includes("log n")) return 40;
+          if (val.includes("n")) return 50;
+          return 10;
+        }),
+      },
+    ],
   };
 
   return (
-    <div className="p-4 min-h-screen bg-black text-white flex flex-col">
+    <div className="p-6 min-h-screen bg-gradient-to-b from-black via-zinc-900 to-black text-white font-sans">
       <NavbarComponent />
+      <h1 className="text-4xl font-bold text-center my-6">Code to Pseudocode Converter</h1>
 
-      <h1 className="text-3xl font-bold text-center mb-6">Code to Pseudocode Converter</h1>
-
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-        <div>
-          <label className="block mb-2 font-semibold">Select Language</label>
+      <div className="grid md:grid-cols-2 gap-6">
+        {/* Code Editor Section */}
+        <Card className="bg-zinc-800 p-6 rounded-lg shadow-lg">
+          <label className="block text-sm font-semibold mb-1">Select Language</label>
           <select
             value={selectedLang}
-            onChange={handleLanguageChange}  // 'event' is now used properly
-            className="w-full mb-4 p-2 border text-black"
+            onChange={(e) => setSelectedLang(e.target.value)}
+            className="w-full rounded p-2 text-black mb-4"
           >
             {languages.map((lang) => (
-              <option key={lang} value={lang}>
-                {lang}
-              </option>
+              <option key={lang}>{lang}</option>
             ))}
           </select>
-          <textarea
-            className="w-full h-60 text-white bg-black"
-            placeholder="Paste your code here..."
-            value={code}
-            onChange={(e) => setCode(e.target.value)}
-          />
 
-          <Button onClick={generatePseudocode} className="mt-4">
-            Convert to Pseudocode
-          </Button>
+          <div className="flex gap-2 mb-4">
+            {(Object.keys(templates) as Array<keyof typeof templates>).map((name) => (
+              <Button key={name} onClick={() => setCode(templates[name])} className="text-sm">{name}</Button>
+            ))}
+          </div>
 
-          <p className="text-red-500 mt-2">{showError && showError}</p>
-        </div>
+          <div className="h-64 border border-zinc-600 rounded overflow-hidden">
+            <Editor
+              height="100%"
+              defaultLanguage={selectedLang.toLowerCase()}
+              theme="vs-dark"
+              value={code}
+              onChange={(value) => setCode(value || "")}
+              options={{ minimap: { enabled: false }, fontSize: 14 }}
+            />
+          </div>
 
-        <div ref={exportRef} className="relative p-4 rounded-md shadow-md bg-black text-white">
+          <div className="flex items-center gap-4 mt-6">
+            <Button onClick={generatePseudocode}>Convert</Button>
+            <Button variant="outline" onClick={() => setCode("")}>Clear</Button>
+            <Button variant="default" onClick={() => toast.info("Step-by-step execution coming soon!")}>
+              <Play className="w-4 h-4 mr-1" /> Play
+            </Button>
+          </div>
+
+          {suggestions.length > 0 && (
+            <div className="mt-4 bg-red-900 p-2 rounded">
+              <p className="font-bold mb-1">Suggestions:</p>
+              <ul className="list-disc list-inside text-sm">
+                {suggestions.map((s, i) => (
+                  <li key={i}>{s}</li>
+                ))}
+              </ul>
+            </div>
+          )}
+        </Card>
+
+        {/* Output Section */}
+        <div className="space-y-6">
           <Tabs defaultValue="pseudocode">
-            <TabsList className="mb-2 z-10 relative">
+            <TabsList className="mb-4">
               <TabsTrigger value="pseudocode">Pseudocode</TabsTrigger>
               <TabsTrigger value="diff">Diff</TabsTrigger>
               <TabsTrigger value="info">Info</TabsTrigger>
+              <TabsTrigger value="chart">Chart</TabsTrigger>
             </TabsList>
 
             <TabsContent value="pseudocode">
-              <Card>
-                <CardContent className="p-4 whitespace-pre-wrap font-mono text-white bg-black">
+              <Card className="bg-black border border-zinc-700">
+                <CardContent className="p-4 whitespace-pre-wrap font-mono text-white">
                   {pseudocode}
                 </CardContent>
               </Card>
             </TabsContent>
 
             <TabsContent value="diff">
-              <Card>
+              <Card className="bg-black border border-zinc-700">
                 <CardContent className="p-4">
                   <h2 className="font-semibold mb-2">Original Code</h2>
                   <SyntaxHighlighter language={selectedLang.toLowerCase()} style={atomDark}>
@@ -215,33 +288,31 @@ const Page = () => {
             </TabsContent>
 
             <TabsContent value="info">
-              <Card>
+              <Card className="bg-black border border-zinc-700">
                 <CardContent className="p-4">
-                  <p><strong>Detected Data Structures:</strong> {dataStructures.join(", ") || "None"}</p>
-                  <p><strong>Detected Algorithms:</strong> {algorithms.join(", ") || "None"}</p>
-                  <p><strong>Best Case:</strong> {complexity.best}</p>
-                  <p><strong>Average Case:</strong> {complexity.avg}</p>
-                  <p><strong>Worst Case:</strong> {complexity.worst}</p>
+                  <p><strong>Data Structures:</strong> {dataStructures.join(", ")}</p>
+                  <p><strong>Algorithms:</strong> {algorithms.join(", ")}</p>
                   <p><strong>Explanation:</strong> {explanation}</p>
+                  <p><strong>Complexity:</strong></p>
+                  <ul>
+                    <li>Best: {complexity.best}</li>
+                    <li>Average: {complexity.avg}</li>
+                    <li>Worst: {complexity.worst}</li>
+                  </ul>
+                </CardContent>
+              </Card>
+            </TabsContent>
+
+            <TabsContent value="chart">
+              <Card className="bg-black border border-zinc-700">
+                <CardContent>
+                  <Bar data={chartData} />
                 </CardContent>
               </Card>
             </TabsContent>
           </Tabs>
         </div>
       </div>
-
-      <section
-        id="about"
-        className={`relative bg-black text-white px-6 py-16 overflow-hidden ${geistSans.variable} ${geistMono.variable} antialiased pattern`}
-      >
-        <h2 className="text-3xl font-bold text-center mb-6">About This Project</h2>
-        <p className="text-lg text-center">
-          This tool converts code into pseudocode, helping developers quickly
-          understand algorithms and data structures. Select a language, paste
-          your code, and get the pseudocode instantly!
-        </p>
-      </section>
-
       <Footer />
     </div>
   );
