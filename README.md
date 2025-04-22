@@ -1,6 +1,7 @@
 # PseudoFY
 
-PseudoFY is a web application that transforms source code into human-readable pseudocode. It's designed to help developers, students, and educators understand the logic behind the code easily.
+
+PseudoFY is a web application that transforms source code into human-readable pseudocode. It's designed to help developers, students, and educators easily understand the code's logic.
 
 ## Features
 
