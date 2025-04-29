@@ -1,7 +1,14 @@
 "use client";
 
 import React, { useState } from "react";
-import Link from "next/link"; // ✅ Correct import for Next.js
+import Link from "next/link";
+import {
+  SignInButton,
+  SignUpButton,
+  SignedIn,
+  SignedOut,
+  UserButton,
+} from '@clerk/nextjs';
 import {
   Navbar,
   NavBody,
@@ -18,7 +25,9 @@ const NavbarComponent = () => {
   const navItems = [
     { name: "About", link: "/about" },
     { name: "PseudoFY", link: "/pseudofy" },
-    { name: "Feedback", link: "/feedback" },
+    { name: "Blog", link: "/blogs" },
+    { name: "Updates", link: "/updates" },
+    { name: "Contact", link: "/contact" },
   ];
 
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
@@ -28,9 +37,20 @@ const NavbarComponent = () => {
       <NavBody>
         <NavbarLogo />
         <NavItems items={navItems} />
+        
         <div className="flex items-center gap-4">
-          <NavbarButton variant="secondary">Linkedin</NavbarButton>
-          <NavbarButton variant="primary">GitHub</NavbarButton>
+          {/* Auth buttons for desktop */}
+          <SignedOut>
+            <SignInButton>
+              <NavbarButton variant="secondary">Sign In</NavbarButton>
+            </SignInButton>
+            <SignUpButton>
+              <NavbarButton variant="primary">Sign Up</NavbarButton>
+            </SignUpButton>
+          </SignedOut>
+          <SignedIn>
+            <UserButton />
+          </SignedIn>
         </div>
       </NavBody>
 
@@ -55,13 +75,23 @@ const NavbarComponent = () => {
             </Link>
           ))}
 
+          {/* Auth buttons for mobile */}
           <div className="flex w-full flex-col gap-4 mt-4">
-            <NavbarButton onClick={() => setIsMobileMenuOpen(false)} variant="primary" className="w-full">
-              Linkedin
-            </NavbarButton>
-            <NavbarButton onClick={() => setIsMobileMenuOpen(false)} variant="primary" className="w-full">
-              GitHub
-            </NavbarButton>
+            <SignedOut>
+              <SignInButton mode="modal">
+                <NavbarButton onClick={() => setIsMobileMenuOpen(false)} variant="secondary" className="w-full">
+                  Sign In
+                </NavbarButton>
+              </SignInButton>
+              <SignUpButton mode="modal">
+                <NavbarButton onClick={() => setIsMobileMenuOpen(false)} variant="primary" className="w-full">
+                  Sign Up
+                </NavbarButton>
+              </SignUpButton>
+            </SignedOut>
+            <SignedIn>
+              <UserButton />
+            </SignedIn>
           </div>
         </MobileNavMenu>
       </MobileNav>

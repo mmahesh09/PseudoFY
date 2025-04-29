@@ -1,12 +1,13 @@
 import React from "react";
-import Image from "next/image"; // ✅ Updated
+import Image from "next/image";
+import { Twitter, Github, Linkedin } from "lucide-react";
 
 const Footer = () => {
   return (
     <footer className="bg-black text-white py-12 px-6 md:px-16">
       <div className="flex flex-col md:flex-row justify-between gap-12">
-        {/* Left section */}
-        <div className="space-y-4">
+        {/* Branding + Info */}
+        <div className="space-y-4 max-w-sm">
           <div className="flex items-center space-x-3">
             <Image
               src="/Py.png"
@@ -23,7 +24,7 @@ const Footer = () => {
               href="https://www.linkedin.com/in/maheshbabu23/"
               target="_blank"
               rel="noopener noreferrer"
-              className="text-blue-400 "
+              className="text-blue-400"
             >
               Mahesh Babu
             </a>
@@ -39,25 +40,53 @@ const Footer = () => {
               @mmahesh09
             </a>
           </p>
+
+          {/* Social Icons */}
+          <div className="flex items-center space-x-4 mt-4">
+            <a
+              href="https://twitter.com/maheshbabu23"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="hover:text-blue-400"
+            >
+              <Twitter className="w-5 h-5" />
+            </a>
+            <a
+              href="https://github.com/mmahesh09"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="hover:text-blue-400"
+            >
+              <Github className="w-5 h-5" />
+            </a>
+            <a
+              href="https://www.linkedin.com/in/maheshbabu23/"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="hover:text-blue-400"
+            >
+              <Linkedin className="w-5 h-5" />
+            </a>
+          </div>
         </div>
 
-        {/* Right section */}
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-8 text-sm">
-          <div>
-            <a href="/about" className="hover:text-blue-400 transition">
-              About
-            </a>
-          </div>
-          <div>
-            <a href="/pseudofy" className="hover:text-blue-400 transition">
-              PseudoFY
-            </a>
-          </div>
-          <div>
-            <a href="/feedback" className="hover:text-blue-400 transition">
-              Feedback
-            </a>
-          </div>
+        {/* Flat Footer Links */}
+        <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-5 gap-4 text-sm">
+          <a href="/about" className="hover:text-blue-400 transition">
+            About
+          </a>
+          <a href="/pseudofy" className="hover:text-blue-400 transition">
+            PseudoFY
+          </a>
+          <a href="/blogs" className="hover:text-blue-400 transition">
+            Resources
+          </a>
+          <a href="/updates" className="hover:text-blue-400 transition">
+            Updates
+          </a>
+          <a href="mailto:teampseudofy@gmail.com" className="hover:text-blue-400 transition">
+            Contact
+          </a>
         </div>
       </div>
     </footer>

@@ -22,6 +22,10 @@ import {
   Tooltip,
   Legend,
 } from "chart.js";
+import { generatePseudocodeFromJS } from "@/lib/astToPseudocode";
+import { generatePseudocodeFromPython } from "@/lib/py";
+import { generatePseudocodeFromCpp } from "@/lib/cpp";
+import { generatePseudocodeFromJava } from "@/lib/j";
 
 ChartJS.register(BarElement, CategoryScale, LinearScale, Tooltip, Legend);
 

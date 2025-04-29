@@ -167,23 +167,23 @@ function Faq02() {
           transition={{ duration: 0.5, delay: 0.3 }}
           className={cn("max-w-md mx-auto mt-12 p-6 rounded-lg text-center")}
         >
-          <div className="inline-flex items-center justify-center p-1.5 rounded-full  mb-4">
+          <div className="inline-flex items-center justify-center p-1.5 rounded-full mb-4">
             <Mail className="h-4 w-4" />
           </div>
           <p className="text-sm font-medium text-gray-900 dark:text-white mb-1">Still have questions?</p>
-          <p className="text-xs text-gray-600 dark:text-gray-400 mb-4">We&apos;sre here to help you</p>
-          <button
-            type="button"
+          <p className="text-xs text-gray-600 dark:text-gray-400 mb-4">We're here to help you</p>
+          <a
+            href="mailto:teampseudofy@gmail.com"
             className={cn(
-              "px-4 py-2 text-sm rounded-md",
+              "inline-block px-4 py-2 text-sm rounded-md",
               "bg-gray-900 dark:bg-white text-white dark:text-gray-900",
               "hover:bg-gray-800 dark:hover:bg-gray-100",
               "transition-colors duration-200",
-              "font-medium",
+              "font-medium"
             )}
           >
             Contact Support
-          </button>
+          </a>
         </motion.div>
       </div>
     </section>
